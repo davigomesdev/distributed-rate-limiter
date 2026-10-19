@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+.github
+
+# Build artifacts
+target
+**/*.rs.bk
+
+# IDE / editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# Env & local secrets
+.env
+.env.*
+!.env.example
+
+# Docs & non-runtime assets (not needed in the image)
+*.md
+docs
+examples
+tests
+benches
+http
+api.http
+LICENSE
+Makefile
+rustfmt.toml
+CONTRIBUTING.md
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs / coverage
+logs
+*.log
+coverage
+*.profraw

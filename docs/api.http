@@ -1,0 +1,46 @@
+@baseUrl = http://localhost:8080
+@key = user:demo
+
+### Health check
+GET {{baseUrl}}/health
+
+### Prometheus metrics
+GET {{baseUrl}}/metrics
+
+### Check rate limit (cost 1)
+POST {{baseUrl}}/v1/check
+Content-Type: application/json
+
+{
+  "key": "{{key}}",
+  "cost": 1
+}
+
+### Check rate limit (cost 5)
+POST {{baseUrl}}/v1/check
+Content-Type: application/json
+
+{
+  "key": "{{key}}",
+  "cost": 5
+}
+
+### Check rate limit (default cost)
+POST {{baseUrl}}/v1/check
+Content-Type: application/json
+
+{
+  "key": "{{key}}"
+}
+
+### Check rate limit (other key)
+POST {{baseUrl}}/v1/check
+Content-Type: application/json
+
+{
+  "key": "user:other",
+  "cost": 1
+}
+
+### Hello protected route
+GET {{baseUrl}}/api/hello
