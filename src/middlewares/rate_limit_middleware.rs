@@ -18,17 +18,9 @@ pub struct RateLimitMiddleware<ST: IStorage + Send + Sync + 'static> {
 
 impl<ST: IStorage + Send + Sync + 'static> RateLimitMiddleware<ST> {
     pub fn new(limiter: Arc<RateLimiter<ST>>) -> Self {
-        let default_extractor: KeyExtractor = Arc::new(|req: &ServiceRequest| -> String {
-            req.connection_info()
-                .realip_remote_addr()
-                .unwrap_or("unknown")
-                .to_string()
-        });
+        let default_extractor: KeyExtractor = Arc::new(|req: &ServiceRequest| -> String { req.connection_info().realip_remote_addr().unwrap_or("unknown").to_string() });
 
-        Self {
-            key_fn: default_extractor,
-            limiter,
-        }
+        Self { key_fn: default_extractor, limiter }
     }
 
     pub fn with_key_extractor<F>(mut self, f: F) -> Self
@@ -116,8 +108,7 @@ where
                 }
                 Err(err) => {
                     tracing::error!(error = %err, "rate limiter failure");
-                    let response: ServiceResponse =
-                        req.into_response(HttpResponse::ServiceUnavailable().finish());
+                    let response: ServiceResponse = req.into_response(HttpResponse::ServiceUnavailable().finish());
                     Ok(response.map_into_right_body())
                 }
             }
